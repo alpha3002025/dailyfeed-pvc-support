@@ -26,21 +26,21 @@ public class KafkaFailureStorageService {
 
     private static final String rootDir = "/kafka-failures";
 
-    public String createUniqueFilePath(String source, String eventType, String key){
+    public String createUniqueFilePath(String targetService, String eventType, String key){
         String uuid = UUID.randomUUID().toString().substring(0, 8);
         LocalDateTime now = LocalDateTime.now();
-        /// /kafka-failures/{eventType}/yyyyMMdd
+        /// /kafka-failures/{target-service}/{eventType}/yyyyMMdd
         return new StringBuffer(rootDir) // 추후 변수로 지정 예정. 현재는 용도가 많지 않아서 하드코딩
-                .append("/").append(source)
+                .append("/").append(targetService)
                 .append("/").append(eventType)
                 .append("/").append(now.format(dir_formatter)) /// /{eventType}/yyyyMMdd
                 .append("/").append(now.format(file_formatter)).append("---").append(key).append("---").append(uuid) /// yyyy-MM-dd-hh-mm-ss---{RedisKey}---{uuid}
                 .toString();
     }
 
-    public String store(String source, String eventType, String key, String payload) throws IOException {
+    public String store(String targetService, String eventType, String key, String payload) throws IOException {
         // 파일 경로 생성
-        String baseFilePath = createUniqueFilePath(source, eventType, key);
+        String baseFilePath = createUniqueFilePath(targetService, eventType, key);
         String fullFilePath = baseFilePath + ".json";
 
         Path filePath = Paths.get(fullFilePath);
