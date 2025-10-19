@@ -18,16 +18,16 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KafkaFailureStorageService {
+public class KafkaListenerFailureStorageService {
     private final DateTimeFormatter dir_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter file_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss");
 
-    private static final String rootDir = "/kafka-failures";
+    private static final String rootDir = "/kafka-listener-failures";
 
     public String createUniqueFilePath(String targetService, String eventType, String key){
         String uuid = UUID.randomUUID().toString().substring(0, 8);
         LocalDateTime now = LocalDateTime.now();
-        /// /kafka-failures/{serviceName}/{eventType}/yyyyMMdd
+        /// /kafka-listener-failures/{serviceName}/{eventType}/yyyyMMdd
         return new StringBuffer(rootDir) // 추후 변수로 지정 예정. 현재는 용도가 많지 않아서 하드코딩
                 .append("/").append(targetService)
                 .append("/").append(eventType)
@@ -50,7 +50,7 @@ public class KafkaFailureStorageService {
             log.info("Created directory: {}", dirPath);
         }
 
-        // JSON 파일 생성 및 payload 기록 (try-with-resources로 리소스 자동 반환)
+        // JSON 파일 생성 및 payload 기록 (try-with-resources 로 리소스 자동 반환)
         try (BufferedWriter writer = Files.newBufferedWriter(
                 filePath,
                 StandardCharsets.UTF_8,
