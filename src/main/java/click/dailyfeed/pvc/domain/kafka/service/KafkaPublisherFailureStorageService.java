@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KafkaFailureStorageService {
+public class KafkaPublisherFailureStorageService {
     private final DateTimeFormatter dir_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final DateTimeFormatter file_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss");
 
